@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_controller.dart';
 import 'otp_page.dart';
+import 'email_entry_page.dart';
+import '../home/home_page.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
@@ -160,18 +162,38 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       icon: Icons.g_mobiledata,
                       label: 'Google',
                       onTap: () async {
-                        await auth.signInWithGoogle();
+                        final success = await auth.signInWithGoogle();
+
+                        if (!mounted) return;
+
+                        if (success) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (_) => const HomePage()),
+                            (_) => false,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Google sign-in failed')),
+                          );
+                        }
                       },
+
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: _SocialButton(
-                      icon: Icons.email_outlined,
-                      label: 'Email',
-                      onTap: () {
-                        _showEmailDialog(context, auth);
-                      },
+                    icon: Icons.email_outlined,
+                    label: 'Email',
+                    onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const EmailEntryPage(),
+                        ),
+                        );
+                    },
                     ),
                   ),
                 ],
