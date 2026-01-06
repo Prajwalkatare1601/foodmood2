@@ -79,24 +79,6 @@ final response = await _client.auth.signInWithIdToken(
     );
   }
 
-  // ================= First Time user =================
-  Future<bool> isFirstTimeUser() async {
-  final user = _client.auth.currentUser;
-  if (user == null) return true;
-
-  final response = await _client
-      .from('profiles')
-      .select('onboarding_completed')
-      .eq('id', user.id)
-      .maybeSingle();
-
-  // If no profile row → first time
-  if (response == null) return true;
-
-  return response['onboarding_completed'] != true;
-}
-
-
   // ================= CURRENT USER =================
 
   User? get currentUser => _client.auth.currentUser;
