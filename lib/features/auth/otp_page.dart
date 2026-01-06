@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_controller.dart';
-import '../home/home_page.dart';
+import '../onboarding/onboarding_page.dart';
 
 class OtpPage extends ConsumerStatefulWidget {
   final String phoneOrEmail;
@@ -130,7 +130,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const HomePage(),
+                                builder: (_) => const OnboardingPage(),
                               ),
                               (_) => false,
                             );

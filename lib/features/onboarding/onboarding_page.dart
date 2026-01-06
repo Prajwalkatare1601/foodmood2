@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'onboarding_controller.dart';
-import '../auth/signup_page.dart';
+import '../home/home_page.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -19,7 +19,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     } else {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const SignupPage()),
+        MaterialPageRoute(builder: (_) => const HomePage()),
       );
     }
   }

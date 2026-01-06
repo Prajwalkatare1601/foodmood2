@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_controller.dart';
 import 'otp_page.dart';
 import 'email_entry_page.dart';
-import '../home/home_page.dart';
+import '../onboarding/onboarding_page.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
@@ -169,7 +169,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         if (success) {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (_) => const HomePage()),
+                            MaterialPageRoute(builder: (_) => const OnboardingPage()),
                             (_) => false,
                           );
                         } else {
