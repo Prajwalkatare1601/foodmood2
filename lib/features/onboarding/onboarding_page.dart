@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'onboarding_controller.dart';
-import '../home/home_page.dart';
+import '../swipe/swipe_page.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -13,16 +13,21 @@ class OnboardingPage extends ConsumerStatefulWidget {
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   int step = 0;
 
-  void next() {
-    if (step < 2) {
-      setState(() => step++);
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
-      );
-    }
+void next() async {
+  if (step < 2) {
+    setState(() => step++);
+  } else {
+    await ref
+        .read(onboardingProvider.notifier)
+        .submitOnboardingAnswers();
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const SwipePage()),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

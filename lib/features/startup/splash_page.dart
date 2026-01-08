@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../auth/signup_page.dart';
+import '../meal_type/meal_type_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -46,7 +47,7 @@ class _SplashPageState extends State<SplashPage>
         Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (_) => const SignupPage(),
+            builder: (_) => const MealTypePage(),
             ),
         );
     });

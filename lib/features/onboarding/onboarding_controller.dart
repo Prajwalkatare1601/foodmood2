@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'onboarding_state.dart';
+import '../supabase/supabase_client.dart';
 
 final onboardingProvider =
     StateNotifierProvider<OnboardingController, OnboardingState>(
@@ -7,63 +8,53 @@ final onboardingProvider =
 );
 
 class OnboardingController extends StateNotifier<OnboardingState> {
-  OnboardingController() : super(const OnboardingState());
+  OnboardingController() : super(OnboardingState());
 
-  // ---------- ALLERGIES ----------
+  // ---------- UI ACTIONS ----------
 
-  void toggleAllergy(String value) {
-    if (value == 'No allergies') {
-      state = state.copyWith(allergies: ['No allergies']);
-      return;
-    }
-
-    final list = [...state.allergies];
-    list.remove('No allergies');
-
-    list.contains(value) ? list.remove(value) : list.add(value);
-
-    state = state.copyWith(allergies: list);
+  void setDietPreference(String value) {
+    state = state.copyWith(dietPreference: value);
   }
 
-  // ---------- FOOD RESTRICTIONS ----------
-
   void toggleRestriction(String value) {
-    if (value == 'No restrictions') {
-      state = state.copyWith(foodRestrictions: ['No restrictions']);
-      return;
-    }
-
     final list = [...state.foodRestrictions];
-    list.remove('No restrictions');
 
-    list.contains(value) ? list.remove(value) : list.add(value);
+    if (list.contains(value)) {
+      list.remove(value);
+    } else {
+      list.add(value);
+    }
 
     state = state.copyWith(foodRestrictions: list);
   }
 
-  // ---------- DIET PREFERENCE ----------
+  void toggleAllergy(String value) {
+    final list = [...state.allergies];
 
-  void setDietPreference(String value) {
-    // Reset restrictions when diet changes
-    List<String> restrictions = [];
-
-    if (value == 'veg' || value == 'vegan') {
-      restrictions.addAll([
-        'Avoid Beef',
-        'Avoid Pork',
-        'Avoid Seafood',
-      ]);
+    if (list.contains(value)) {
+      list.remove(value);
+    } else {
+      list.add(value);
     }
 
-    state = state.copyWith(
-      dietPreference: value,
-      foodRestrictions: restrictions,
-    );
+    state = state.copyWith(allergies: list);
   }
 
-  // ---------- RESET ----------
+  // ---------- SAVE TO SUPABASE ----------
 
-  void reset() {
-    state = const OnboardingState();
+  Future<void> submitOnboardingAnswers() async {
+    final user = supabase.auth.currentUser;
+
+    if (user == null) {
+      throw Exception('User not logged in');
+    }
+
+    await supabase.from('user_onboarding_answers').upsert({
+  'user_id': user.id,
+  'diet_preference': state.dietPreference,
+  'food_restrictions': state.foodRestrictions,
+  'allergies': state.allergies,
+});
+
   }
 }
