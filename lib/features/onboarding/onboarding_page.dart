@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'onboarding_controller.dart';
-import '../swipe/swipe_page.dart';
+import '../meal_type/meal_type_page.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -23,7 +23,7 @@ void next() async {
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const SwipePage()),
+      MaterialPageRoute(builder: (_) => const MealTypePage()),
     );
   }
 }

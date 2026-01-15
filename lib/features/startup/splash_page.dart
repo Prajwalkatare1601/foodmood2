@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../auth/signup_page.dart';
 import '../meal_type/meal_type_page.dart';
 
@@ -24,10 +25,8 @@ class _SplashPageState extends State<SplashPage>
       duration: const Duration(milliseconds: 1800),
     );
 
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    );
+    _fadeAnimation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeOut);
 
     _scaleAnimation = Tween<double>(
       begin: 0.95,
@@ -41,15 +40,20 @@ class _SplashPageState extends State<SplashPage>
 
     _controller.forward();
 
-    // Navigate after animation
     Future.delayed(const Duration(milliseconds: 2200), () {
       if (!mounted) return;
-        Navigator.pushReplacement(
+
+      final session = Supabase.instance.client.auth.currentSession;
+
+      debugPrint('Splash session: $session');
+
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (_) => const MealTypePage(),
-            ),
-        );
+          builder: (_) =>
+              session != null ? const MealTypePage() : const SignupPage(),
+        ),
+      );
     });
   }
 
