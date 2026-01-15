@@ -14,10 +14,16 @@ class Meal {
   final int calories;
   final String prepTime;
   final List<String> allergens;
+
+  /// Macros
   final int carbs;
   final int protein;
   final int fat;
   final int fiber;
+
+  /// NEW
+  final List<String> ingredients;
+  final List<String> recipe;
 
   Meal({
     required this.id,
@@ -31,6 +37,8 @@ class Meal {
     required this.protein,
     required this.fat,
     required this.fiber,
+    required this.ingredients,
+    required this.recipe,
   });
 
   factory Meal.fromJson(Map<String, dynamic> json) {
@@ -46,6 +54,8 @@ class Meal {
       protein: json['protein'],
       fat: json['fat'],
       fiber: json['fiber'],
+      ingredients: List<String>.from(json['ingredients'] ?? []),
+      recipe: List<String>.from(json['recipe'] ?? []),
     );
   }
 }

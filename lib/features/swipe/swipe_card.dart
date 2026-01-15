@@ -22,6 +22,7 @@ class _SwipeCardState extends State<SwipeCard>
     with SingleTickerProviderStateMixin {
   double dx = 0;
   double dy = 0;
+  
 
   static const double swipeThreshold = 120;
 
@@ -69,9 +70,10 @@ class _SwipeCardState extends State<SwipeCard>
     final cardOpacity = (1 - dx.abs() / 400).clamp(0.6, 1.0);
     final likeOpacity = (dx / swipeThreshold).clamp(0.0, 1.0);
     final nopeOpacity = (-dx / swipeThreshold).clamp(0.0, 1.0);
+    
 
     return AnimatedPositioned(
-      duration: const Duration(milliseconds: 350),
+      duration: const Duration(milliseconds: 1050),
       curve: Curves.easeOutBack, // 🎞 spring-like motion
       left: dx,
       top: dy,
@@ -82,8 +84,8 @@ class _SwipeCardState extends State<SwipeCard>
         child: GestureDetector(
           onPanUpdate: (details) {
             setState(() {
-              dx += details.delta.dx;
-              dy += details.delta.dy;
+              dx += details.delta.dx*0.85;
+              dy += details.delta.dy*0.85;
             });
           },
           onPanEnd: (_) {

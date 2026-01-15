@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../result/result_page.dart';
 import 'swipe_controller.dart';
 import 'swipe_card.dart';
 import '../meal_type/meal_type_page.dart';
@@ -98,14 +98,35 @@ return Scaffold(
                     isTop: false,
                   ),
                   SwipeCard(
-                    meal: meals[currentIndex],
-                    isTop: true,
-                    onSwipe: (_) {
-                      ref
-                          .read(swipeIndexProvider.notifier)
-                          .swipeNext(meals.length);
-                    },
-                  ),
+  meal: meals[currentIndex],
+  isTop: true,
+  onSwipe: (liked) {
+    if (liked) {
+      /// ❤️ GO TO RESULT PAGE
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultPage(
+            meal: meals[currentIndex],
+            onUseMeal: () {
+              // TODO: save meal / proceed
+              Navigator.pop(context);
+            },
+            onReshuffle: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      );
+    } else {
+      /// ❌ JUST MOVE TO NEXT CARD
+      ref
+          .read(swipeIndexProvider.notifier)
+          .swipeNext(meals.length);
+    }
+  },
+),
+
                 ],
               );
             },
