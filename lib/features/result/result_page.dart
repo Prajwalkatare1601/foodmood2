@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../swipe/swipe_controller.dart';
+import 'meal_success_page.dart';
 
 class ResultPage extends StatelessWidget {
   final Meal meal;
@@ -163,7 +164,14 @@ class ResultPage extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: onUseMeal,
+onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => MealSuccessPage(meal: meal),
+    ),
+  );
+},
                       icon: const Icon(Icons.check),
                       label: const Text('Use This Meal'),
                       style: ElevatedButton.styleFrom(
